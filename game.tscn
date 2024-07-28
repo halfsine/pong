@@ -1,0 +1,356 @@
+[gd_scene load_steps=21 format=3 uid="uid://q45nf2rag672"]
+
+[ext_resource type="Script" path="res://scripts/paddle1.gd" id="1_60r7s"]
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_iwfre"]
+[ext_resource type="PackedScene" uid="uid://b407oradvah1q" path="res://prefabs/powerups/wallPowerUp.tscn" id="2_k7d4v"]
+[ext_resource type="Script" path="res://scripts/ball.gd" id="2_nmqxj"]
+[ext_resource type="Script" path="res://scripts/paddle2.gd" id="2_q0brg"]
+[ext_resource type="Shader" path="res://shaders/crt.gdshader" id="5_2n6l1"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_irs5h"]
+noise_type = 3
+fractal_type = 2
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_w7222"]
+friction = 0.0
+bounce = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kno4b"]
+size = Vector2(40, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pdwrb"]
+size = Vector2(40, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s10b8"]
+size = Vector2(1155, 320)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yili1"]
+size = Vector2(363, 1504)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ynd0s"]
+size = Vector2(40, 200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w64ea"]
+size = Vector2(350, 525)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a02c8"]
+size = Vector2(29, 900)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dvta0"]
+bg_color = Color(0.0971741, 0.0965545, 0.127556, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_c1hcg"]
+color = Color(0.878431, 0.47451, 0.521569, 1)
+thickness = 61
+vertical = true
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_hampa"]
+color = Color(1, 1, 1, 1)
+thickness = 4
+vertical = true
+
+[sub_resource type="Theme" id="Theme_f367e"]
+VSlider/styles/grabber_area = SubResource("StyleBoxLine_c1hcg")
+VSlider/styles/slider = SubResource("StyleBoxLine_hampa")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2u148"]
+shader = ExtResource("5_2n6l1")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.07
+shader_parameter/scanlines_width = 0.5
+shader_parameter/grille_opacity = 0.072
+shader_parameter/resolution = Vector2(1000, 1000)
+shader_parameter/pixelate = false
+shader_parameter/roll = true
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.002
+shader_parameter/noise_opacity = 0.161
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.045
+shader_parameter/aberration = 0.03
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = true
+shader_parameter/warp_amount = 1.0
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 0.1
+
+[node name="Game" type="Node2D" node_paths=PackedStringArray("ball")]
+process_mode = 3
+texture_filter = 1
+script = ExtResource("1_iwfre")
+ball = NodePath("Ball")
+shakeNoise = SubResource("FastNoiseLite_irs5h")
+powerups = Array[Resource]([ExtResource("2_k7d4v")])
+
+[node name="PowerUps" type="Node" parent="."]
+
+[node name="Ball" type="RigidBody2D" parent="."]
+process_mode = 1
+collision_layer = 0
+physics_material_override = SubResource("PhysicsMaterial_w7222")
+gravity_scale = 0.0
+can_sleep = false
+lock_rotation = true
+linear_velocity = Vector2(-200, 50)
+linear_damp = -0.2
+script = ExtResource("2_nmqxj")
+
+[node name="ColorRect2" type="ColorRect" parent="Ball"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+shape = SubResource("RectangleShape2D_kno4b")
+
+[node name="Area2D" type="Area2D" parent="Ball" groups=["ball"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball/Area2D"]
+shape = SubResource("RectangleShape2D_pdwrb")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+process_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 592)
+shape = SubResource("RectangleShape2D_s10b8")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, -592)
+shape = SubResource("RectangleShape2D_s10b8")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(757.5, 0)
+shape = SubResource("RectangleShape2D_yili1")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-760, -1)
+shape = SubResource("RectangleShape2D_yili1")
+
+[node name="Paddle1" type="CharacterBody2D" parent="."]
+process_mode = 1
+position = Vector2(-535, 0)
+script = ExtResource("1_60r7s")
+
+[node name="ColorRect" type="ColorRect" parent="Paddle1"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -100.0
+offset_right = 20.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle1"]
+shape = SubResource("RectangleShape2D_ynd0s")
+
+[node name="Paddle2" type="CharacterBody2D" parent="."]
+process_mode = 1
+position = Vector2(534, 0)
+script = ExtResource("2_q0brg")
+
+[node name="ColorRect" type="ColorRect" parent="Paddle2"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -100.0
+offset_right = 20.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle2"]
+shape = SubResource("RectangleShape2D_ynd0s")
+
+[node name="Below" type="Area2D" parent="Paddle2"]
+position = Vector2(-256, 352)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle2/Below"]
+shape = SubResource("RectangleShape2D_w64ea")
+
+[node name="Above" type="Area2D" parent="Paddle2"]
+position = Vector2(-256, -352)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle2/Above"]
+shape = SubResource("RectangleShape2D_w64ea")
+
+[node name="PaddleZone1" type="Area2D" parent="."]
+process_mode = 1
+position = Vector2(-567, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PaddleZone1"]
+position = Vector2(-3.5, -1)
+shape = SubResource("RectangleShape2D_a02c8")
+
+[node name="PaddleZone2" type="Area2D" parent="."]
+process_mode = 1
+position = Vector2(573, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PaddleZone2"]
+position = Vector2(-3.5, -1)
+shape = SubResource("RectangleShape2D_a02c8")
+
+[node name="Score1" type="Label" parent="."]
+texture_filter = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -256.0
+offset_top = -328.0
+offset_right = -216.0
+offset_bottom = -305.0
+grow_horizontal = 2
+scale = Vector2(3, 3)
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score2" type="Label" parent="."]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 136.0
+offset_top = -328.0
+offset_right = 176.0
+offset_bottom = -305.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.555, 0.555)
+
+[node name="Control" type="Control" parent="Camera2D"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -576.0
+offset_top = -432.0
+offset_right = 576.0
+offset_bottom = 432.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="Camera2D/Control"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dvta0")
+metadata/_edit_use_anchors_ = true
+
+[node name="VSlider" type="VSlider" parent="Camera2D/Control/Panel"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.149
+anchor_top = 0.5
+anchor_right = 0.149
+anchor_bottom = 0.5
+offset_left = -27.648
+offset_top = -184.0
+offset_right = 28.352
+offset_bottom = 200.0
+theme = SubResource("Theme_f367e")
+max_value = 1500.0
+step = 50.0
+value = 150.0
+rounded = true
+
+[node name="Label" type="Label" parent="Camera2D/Control/Panel/VSlider"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = -0.033
+anchor_right = 0.5
+anchor_bottom = -0.033
+offset_left = -131.0
+offset_top = -67.328
+offset_right = -27.0
+offset_bottom = -44.328
+scale = Vector2(2.525, 2.525)
+text = "AI smartness"
+
+[node name="Options" type="Button" parent="Camera2D/Control/Panel"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 38.0
+offset_right = -41.0
+offset_bottom = 69.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3.05, 3.05)
+text = "OPTIONS"
+
+[node name="Back" type="Button" parent="Camera2D/Control/Panel"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -132.0
+offset_right = -41.0
+offset_bottom = -101.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3.05, 3.05)
+text = "BACK"
+
+[node name="CRT" type="ColorRect" parent="Camera2D/Control"]
+visibility_layer = 2
+material = SubResource("ShaderMaterial_2u148")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PowerUpTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="area_entered" from="PaddleZone1" to="Paddle2" method="_on_paddle_zone_1_area_entered"]
+[connection signal="area_entered" from="PaddleZone2" to="Paddle1" method="_on_paddle_zone_2_area_entered"]
+[connection signal="value_changed" from="Camera2D/Control/Panel/VSlider" to="." method="_on_v_slider_value_changed"]
+[connection signal="timeout" from="PowerUpTimer" to="." method="_on_power_up_timer_timeout"]
