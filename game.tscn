@@ -85,7 +85,7 @@ ball = NodePath("Ball")
 shakeNoise = SubResource("FastNoiseLite_irs5h")
 powerups = Array[Resource]([ExtResource("2_k7d4v")])
 
-[node name="PowerUps" type="Node" parent="."]
+[node name="PowerUps" type="Node2D" parent="."]
 
 [node name="Ball" type="RigidBody2D" parent="."]
 process_mode = 1
