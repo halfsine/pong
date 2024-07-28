@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://byyy34ii2iwl0"]
+
+[ext_resource type="Script" path="res://scripts/ball.gd" id="1_dyscs"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bp1ve"]
+friction = 0.0
+bounce = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2jfvf"]
+size = Vector2(40, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kpmhi"]
+size = Vector2(40, 40)
+
+[node name="Ball" type="RigidBody2D"]
+process_mode = 1
+collision_layer = 0
+physics_material_override = SubResource("PhysicsMaterial_bp1ve")
+gravity_scale = 0.0
+can_sleep = false
+lock_rotation = true
+linear_velocity = Vector2(-200, 50)
+linear_damp = -0.2
+script = ExtResource("1_dyscs")
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_2jfvf")
+
+[node name="Area2D2" type="Area2D" parent="." groups=["ball"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+shape = SubResource("RectangleShape2D_kpmhi")

@@ -15,5 +15,5 @@ func _on_paddle_zone_2_area_entered(area):
 	if area.is_in_group("ball"):
 		score += 1
 		get_parent().get_node("Score1").text = str(score)
-		get_parent().respawnBall()
+		area.get_parent().respawnBall()
 		get_parent().shakiness += 65

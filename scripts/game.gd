@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var ball : RigidBody2D
+@export var balls : Array[RigidBody2D]
 
 @export var shakeNoise = FastNoiseLite.new()
 var noisePos = 0
@@ -11,13 +11,15 @@ var shakiness = 0
 func _process(delta):
 	if shakiness:
 		shakiness = lerpf(shakiness, 0, 0.1)
-		$Camera2D.offset.x = lerp($Camera2D.offset.x, randf_range(-shakiness, shakiness), 0.25)
-		$Camera2D.offset.y = lerp($Camera2D.offset.y, randf_range(-shakiness, shakiness), 0.25)
+		$Camera2D.position.x = lerp($Camera2D.position.x, randf_range(-shakiness, shakiness), 0.25)
+		$Camera2D.position.y = lerp($Camera2D.position.y, randf_range(-shakiness, shakiness), 0.25)
 	else:
-		$Camera2D.offset = $Camera2D.offset.lerp(Vector2.ZERO, 0.25)
+		$Camera2D.position = $Camera2D.position.lerp(Vector2.ZERO, 0.25)
 
 func respawnBall():
-	ball.resetting = true
+	for node in balls:
+		if node.resetting:
+			node.resetting = true
 
 func _on_v_slider_value_changed(value):
 	$Paddle2/Above/CollisionShape2D.shape.size.x = value

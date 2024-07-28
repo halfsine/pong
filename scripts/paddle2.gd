@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 var score = 0
-var isAi = true
+var isAi = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
@@ -30,5 +30,5 @@ func _on_paddle_zone_1_area_entered(area):
 	if area.is_in_group("ball"):
 		score += 1
 		get_parent().get_node("Score2").text = str(score)
-		get_parent().respawnBall()
+		area.get_parent().respawnBall()
 		get_parent().shakiness += 65
