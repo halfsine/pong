@@ -1,0 +1,82 @@
+[gd_scene load_steps=9 format=3 uid="uid://xwix30l6muna"]
+
+[ext_resource type="Script" path="res://scripts/saw.gd" id="1_14xcu"]
+[ext_resource type="AudioStream" uid="uid://yctln40f8idk" path="res://sounds/win.wav" id="2_c5ijq"]
+[ext_resource type="Texture2D" uid="uid://cgn20qryiaqhw" path="res://sprites/saw.png" id="3_27q3j"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bp1ve"]
+friction = 0.0
+bounce = 10.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fea2e"]
+radius = 64.0
+
+[sub_resource type="Animation" id="Animation_ol3fg"]
+resource_name = "moving"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Saw:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="Animation" id="Animation_ywudx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Saw:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lmo6c"]
+_data = {
+"RESET": SubResource("Animation_ywudx"),
+"moving": SubResource("Animation_ol3fg")
+}
+
+[node name="Saw" type="RigidBody2D"]
+process_mode = 1
+collision_layer = 0
+physics_material_override = SubResource("PhysicsMaterial_bp1ve")
+gravity_scale = 0.0
+can_sleep = false
+lock_rotation = true
+linear_velocity = Vector2(-200, 50)
+linear_damp = -0.2
+script = ExtResource("1_14xcu")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_fea2e")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_c5ijq")
+volume_db = -16.0
+
+[node name="Saw" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("3_27q3j")
+
+[node name="Area2D" type="Area2D" parent="." groups=["saw"]]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_fea2e")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lmo6c")
+}
+autoplay = "moving"

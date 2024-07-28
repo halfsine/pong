@@ -1,22 +1,13 @@
 extends CharacterBody2D
 
 var score = 0
-var isAi = false
+var isAi = true
+var input = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
-	var input = 0
-	if isAi:
-		
-		for node in $Below.get_overlapping_areas():
-			if node.is_in_group("ball"):
-				input += 1
-				
-		for node in $Above.get_overlapping_areas():
-			if node.is_in_group("ball"):
-				input -= 1
-		
-	else:
+	if !isAi:
+		input = 0
 		input = Input.get_axis("up2", "down2")
 	
 	if input:
@@ -32,3 +23,25 @@ func _on_paddle_zone_1_area_entered(area):
 		get_parent().get_node("Score2").text = str(score)
 		area.get_parent().respawnBall()
 		get_parent().shakiness += 65
+		get_parent().get_node("PaddleZone2/AudioStreamPlayer2D").play()
+
+
+func _on_think_tick_timeout():
+	if isAi:
+		input = 0
+		for node in $Below.get_overlapping_areas():
+			if node.is_in_group("ball"):
+				input = 1
+					
+		for node in $Above.get_overlapping_areas():
+			if node.is_in_group("ball"):
+				input = -1
+
+func breakPaddle():
+	visible = false
+	set_collision_layer_value(1, false)
+	$GPUParticles2D.emitting = true
+	await get_tree().create_timer(5).timeout
+	$AnimationPlayer.play("respawn")
+	await $AnimationPlayer.animation_finished
+	set_collision_layer_value(1, true)

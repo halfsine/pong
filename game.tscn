@@ -1,25 +1,19 @@
-[gd_scene load_steps=21 format=3 uid="uid://q45nf2rag672"]
+[gd_scene load_steps=30 format=3 uid="uid://q45nf2rag672"]
 
 [ext_resource type="Script" path="res://scripts/paddle1.gd" id="1_60r7s"]
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_iwfre"]
 [ext_resource type="PackedScene" uid="uid://b407oradvah1q" path="res://prefabs/powerups/wall.tscn" id="2_k7d4v"]
-[ext_resource type="Script" path="res://scripts/ball.gd" id="2_nmqxj"]
 [ext_resource type="Script" path="res://scripts/paddle2.gd" id="2_q0brg"]
+[ext_resource type="PackedScene" uid="uid://dimvx5wiqbvyj" path="res://prefabs/powerups/multipleBalls.tscn" id="3_jy4mp"]
+[ext_resource type="PackedScene" uid="uid://byyy34ii2iwl0" path="res://prefabs/ball.tscn" id="4_7rny7"]
+[ext_resource type="PackedScene" uid="uid://fq3ucxv1vkhf" path="res://prefabs/powerups/bomb.tscn" id="4_biab7"]
 [ext_resource type="Shader" path="res://shaders/crt.gdshader" id="5_2n6l1"]
+[ext_resource type="AudioStream" uid="uid://dvhiyovcq84ij" path="res://sounds/wallhit.wav" id="6_y3bks"]
+[ext_resource type="Texture2D" uid="uid://dbqgq41povfox" path="res://sprites/paddlePiece.png" id="7_b1b7p"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_irs5h"]
 noise_type = 3
 fractal_type = 2
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_w7222"]
-friction = 0.0
-bounce = 10.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kno4b"]
-size = Vector2(40, 40)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pdwrb"]
-size = Vector2(40, 40)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s10b8"]
 size = Vector2(1155, 320)
@@ -30,8 +24,90 @@ size = Vector2(363, 1504)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ynd0s"]
 size = Vector2(40, 200)
 
+[sub_resource type="Gradient" id="Gradient_kqkwh"]
+offsets = PackedFloat32Array(0.548673, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2lv1w"]
+gradient = SubResource("Gradient_kqkwh")
+width = 16
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_oqtrq"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(0, 50, 0)
+angle_min = -720.0
+angle_max = 720.0
+spread = 90.0
+initial_velocity_min = 1000.0
+initial_velocity_max = 1000.0
+gravity = Vector3(0, 0, 0)
+damping_min = 1000.0
+damping_max = 5000.0
+scale_min = 2.0
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_2lv1w")
+
+[sub_resource type="Animation" id="Animation_axk11"]
+resource_name = "respawn"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5, 0.6, 0.666667, 0.7, 0.733333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false, true, false, true]
+}
+
+[sub_resource type="Animation" id="Animation_e306j"]
+resource_name = "idle"
+loop_mode = 1
+
+[sub_resource type="Animation" id="Animation_gxr45"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qbtav"]
+_data = {
+"RESET": SubResource("Animation_gxr45"),
+"idle": SubResource("Animation_e306j"),
+"respawn": SubResource("Animation_axk11")
+}
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w64ea"]
 size = Vector2(350, 525)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_b0tvr"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(0, 50, 0)
+angle_min = -720.0
+angle_max = 720.0
+direction = Vector3(-1, 0, 0)
+spread = 90.0
+initial_velocity_min = 1000.0
+initial_velocity_max = 1000.0
+gravity = Vector3(0, 0, 0)
+damping_min = 1000.0
+damping_max = 5000.0
+scale_min = 2.0
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_2lv1w")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a02c8"]
 size = Vector2(29, 900)
@@ -82,41 +158,11 @@ process_mode = 3
 texture_filter = 1
 script = ExtResource("1_iwfre")
 shakeNoise = SubResource("FastNoiseLite_irs5h")
-powerups = Array[Resource]([ExtResource("2_k7d4v")])
+powerups = Array[Resource]([ExtResource("2_k7d4v"), ExtResource("3_jy4mp"), ExtResource("4_biab7")])
 
 [node name="PowerUps" type="Node2D" parent="."]
 
-[node name="Ball" type="RigidBody2D" parent="."]
-process_mode = 1
-collision_layer = 0
-physics_material_override = SubResource("PhysicsMaterial_w7222")
-gravity_scale = 0.0
-can_sleep = false
-lock_rotation = true
-linear_velocity = Vector2(-200, 50)
-linear_damp = -0.2
-script = ExtResource("2_nmqxj")
-
-[node name="ColorRect2" type="ColorRect" parent="Ball"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
-shape = SubResource("RectangleShape2D_kno4b")
-
-[node name="Area2D" type="Area2D" parent="Ball" groups=["ball"]]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball/Area2D"]
-shape = SubResource("RectangleShape2D_pdwrb")
+[node name="Ball" parent="." instance=ExtResource("4_7rny7")]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 process_mode = 1
@@ -137,7 +183,7 @@ shape = SubResource("RectangleShape2D_yili1")
 position = Vector2(-760, -1)
 shape = SubResource("RectangleShape2D_yili1")
 
-[node name="Paddle1" type="CharacterBody2D" parent="."]
+[node name="Paddle1" type="CharacterBody2D" parent="." groups=["paddle"]]
 process_mode = 1
 position = Vector2(-535, 0)
 script = ExtResource("1_60r7s")
@@ -159,7 +205,22 @@ metadata/_edit_use_anchors_ = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle1"]
 shape = SubResource("RectangleShape2D_ynd0s")
 
-[node name="Paddle2" type="CharacterBody2D" parent="."]
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Paddle1"]
+position = Vector2(7, 0)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_oqtrq")
+texture = ExtResource("7_b1b7p")
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 16
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Paddle1"]
+libraries = {
+"": SubResource("AnimationLibrary_qbtav")
+}
+
+[node name="Paddle2" type="CharacterBody2D" parent="." groups=["paddle"]]
 process_mode = 1
 position = Vector2(534, 0)
 script = ExtResource("2_q0brg")
@@ -193,6 +254,25 @@ position = Vector2(-256, -352)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle2/Above"]
 shape = SubResource("RectangleShape2D_w64ea")
 
+[node name="ThinkTick" type="Timer" parent="Paddle2"]
+wait_time = 0.06
+autostart = true
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Paddle2"]
+position = Vector2(-6, 0)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_b0tvr")
+texture = ExtResource("7_b1b7p")
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 16
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Paddle2"]
+libraries = {
+"": SubResource("AnimationLibrary_qbtav")
+}
+
 [node name="PaddleZone1" type="Area2D" parent="."]
 process_mode = 1
 position = Vector2(-567, 0)
@@ -201,6 +281,11 @@ position = Vector2(-567, 0)
 position = Vector2(-3.5, -1)
 shape = SubResource("RectangleShape2D_a02c8")
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PaddleZone1"]
+position = Vector2(1069, 0)
+stream = ExtResource("6_y3bks")
+volume_db = -16.793
+
 [node name="PaddleZone2" type="Area2D" parent="."]
 process_mode = 1
 position = Vector2(573, 0)
@@ -208,6 +293,11 @@ position = Vector2(573, 0)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PaddleZone2"]
 position = Vector2(-3.5, -1)
 shape = SubResource("RectangleShape2D_a02c8")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PaddleZone2"]
+position = Vector2(-1140, 0)
+stream = ExtResource("6_y3bks")
+volume_db = -16.793
 
 [node name="Score1" type="Label" parent="."]
 texture_filter = 1
@@ -355,6 +445,7 @@ mouse_filter = 2
 wait_time = 5.0
 autostart = true
 
+[connection signal="timeout" from="Paddle2/ThinkTick" to="Paddle2" method="_on_think_tick_timeout"]
 [connection signal="area_entered" from="PaddleZone1" to="Paddle2" method="_on_paddle_zone_1_area_entered"]
 [connection signal="area_entered" from="PaddleZone2" to="Paddle1" method="_on_paddle_zone_2_area_entered"]
 [connection signal="value_changed" from="Camera2D/Control/Panel/VSlider" to="." method="_on_v_slider_value_changed"]

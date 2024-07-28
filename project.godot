@@ -25,6 +25,9 @@ window/stretch/mode="viewport"
 [global_group]
 
 ball=""
+saw=""
+paddle=""
+bomb=""
 
 [input]
 

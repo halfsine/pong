@@ -1,0 +1,84 @@
+[gd_scene load_steps=7 format=3 uid="uid://dyi1cln2l8dky"]
+
+[ext_resource type="Script" path="res://scripts/bomb.gd" id="1_2ythq"]
+[ext_resource type="AudioStream" uid="uid://dhy6mymt0bfa2" path="res://sounds/bounce.wav" id="2_oy2vd"]
+[ext_resource type="Texture2D" uid="uid://en57n7gxk2px" path="res://sprites/bomb.png" id="3_xm8t0"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bp1ve"]
+friction = 0.0
+bounce = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2jfvf"]
+size = Vector2(41, 41)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kpmhi"]
+size = Vector2(256, 256)
+
+[node name="Bomb" type="RigidBody2D"]
+process_mode = 1
+collision_layer = 0
+physics_material_override = SubResource("PhysicsMaterial_bp1ve")
+gravity_scale = 0.0
+can_sleep = false
+lock_rotation = true
+linear_velocity = Vector2(-200, 50)
+linear_damp = -0.2
+script = ExtResource("1_2ythq")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -0.5)
+shape = SubResource("RectangleShape2D_2jfvf")
+
+[node name="Area2D" type="Area2D" parent="." groups=["bomb"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0.75, -0.75)
+shape = SubResource("RectangleShape2D_kpmhi")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_oy2vd")
+volume_db = -5.0
+
+[node name="Bomb" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(12, -12)
+texture = ExtResource("3_xm8t0")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="Explosion" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 68.0
+offset_top = -122.0
+offset_right = 268.0
+offset_bottom = 78.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.3067
+color = Color(1, 0.486275, 0.2, 1)
+
+[node name="ColorRect" type="ColorRect" parent="Explosion"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.4458
+offset_top = -139.519
+offset_right = 164.554
+offset_bottom = 60.4809
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.550482
+color = Color(1, 0.486275, 0.2, 1)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_2_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,19 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://dimvx5wiqbvyj"]
+[gd_scene load_steps=4 format=3 uid="uid://dcsogvpv2wbyr"]
 
-[ext_resource type="Script" path="res://scripts/bombPowerUp.gd" id="1_o08o1"]
-[ext_resource type="Texture2D" uid="uid://bmd80g7ej0wsi" path="res://sprites/moreballs.png" id="2_ss1um"]
+[ext_resource type="Script" path="res://scripts/sawPowerUp.gd" id="1_6wonw"]
+[ext_resource type="Texture2D" uid="uid://d0wp6cughsjlt" path="res://sprites/sawpowerup.png" id="2_7undh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ccwme"]
 radius = 50.0
 
 [node name="Wall" type="Node2D"]
-script = ExtResource("1_o08o1")
+script = ExtResource("1_6wonw")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture_filter = 1
-texture = ExtResource("2_ss1um")
+texture = ExtResource("2_7undh")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." groups=["saw"]]
 collision_layer = 0
 input_pickable = false
 

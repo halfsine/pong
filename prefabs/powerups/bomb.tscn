@@ -1,17 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://dimvx5wiqbvyj"]
+[gd_scene load_steps=4 format=3 uid="uid://fq3ucxv1vkhf"]
 
-[ext_resource type="Script" path="res://scripts/bombPowerUp.gd" id="1_o08o1"]
-[ext_resource type="Texture2D" uid="uid://bmd80g7ej0wsi" path="res://sprites/moreballs.png" id="2_ss1um"]
+[ext_resource type="Script" path="res://scripts/bombPowerUp.gd" id="1_1c328"]
+[ext_resource type="Texture2D" uid="uid://btbfmw5fcn0im" path="res://sprites/bombpowerup.png" id="2_f23c8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ccwme"]
 radius = 50.0
 
 [node name="Wall" type="Node2D"]
-script = ExtResource("1_o08o1")
+script = ExtResource("1_1c328")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture_filter = 1
-texture = ExtResource("2_ss1um")
+texture = ExtResource("2_f23c8")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 0
