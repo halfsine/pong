@@ -7,4 +7,4 @@ func _physics_process(delta):
 			get_parent().get_parent().shakiness += 100
 
 func _on_area_2d_2_body_entered(body):
-	$AudioStreamPlayer2D.play()
+	$AudioStreamPlayer2D.play() 

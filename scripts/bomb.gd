@@ -11,9 +11,10 @@ func _physics_process(delta):
 
 func _on_area_2d_2_body_entered(body):
 	$AudioStreamPlayer2D.play()
-
+	
 func _on_timer_timeout():
 	$Bomb.visible = true
+	get_parent().get_parent().shakiness += 100
 	freeze = true
 	$Explosion.visible = true
 	for node in $Area2D.get_overlapping_bodies():

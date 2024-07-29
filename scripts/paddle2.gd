@@ -38,10 +38,11 @@ func _on_think_tick_timeout():
 				input = -1
 
 func breakPaddle():
-	visible = false
+	$ColorRect.color.a = 0
 	set_collision_layer_value(1, false)
 	$GPUParticles2D.emitting = true
 	await get_tree().create_timer(5).timeout
+	$ColorRect.color.a = 255
 	$AnimationPlayer.play("respawn")
 	await $AnimationPlayer.animation_finished
 	set_collision_layer_value(1, true)
