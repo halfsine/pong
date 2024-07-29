@@ -1,13 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://dimvx5wiqbvyj"]
 
-[ext_resource type="Script" path="res://scripts/bombPowerUp.gd" id="1_o08o1"]
+[ext_resource type="Script" path="res://scripts/ballsPowerUp.gd" id="1_6oarm"]
 [ext_resource type="Texture2D" uid="uid://bmd80g7ej0wsi" path="res://sprites/moreballs.png" id="2_ss1um"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ccwme"]
 radius = 50.0
 
 [node name="Wall" type="Node2D"]
-script = ExtResource("1_o08o1")
+script = ExtResource("1_6oarm")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture_filter = 1
