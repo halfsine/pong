@@ -1,10 +1,9 @@
 extends Node2D
 
-@export var balls : Array[RigidBody2D]
-
-@export var shakeNoise = FastNoiseLite.new()
 var noisePos = 0
 var shakiness = 0
+
+@onready var bus := AudioServer.get_bus_index("Master")
 
 var reactionTime = 1.501
 
@@ -29,6 +28,7 @@ func _input(event):
 		if get_tree().paused:
 			get_tree().paused = false
 			$Camera2D/Control/Panel.visible = false
+			$Camera2D/Control/Settings.visible = false
 		else:
 			get_tree().paused = true
 			$Camera2D/Control/Panel.visible = true
@@ -39,3 +39,18 @@ func _on_power_up_timer_timeout():
 	powerup.position.y = randi_range(-400, 400)
 	powerup.position.x = randi_range(-400, 400)
 	$PowerUps.add_child(powerup)
+
+
+func _on_options_pressed():
+	$Camera2D/Control/Settings.visible = true
+
+func _on_back_pressed():
+	$Camera2D/Control/Panel.visible = false
+	$Camera2D/Control/Settings.visible = false
+	get_tree().paused = false
+
+func _on_volume_slider_value_changed(value):
+	AudioServer.set_bus_volume_db(bus, linear_to_db(value))
+
+func _ready():
+	$Camera2D/Control/Settings/VolumeSlider.value = db_to_linear(AudioServer.get_bus_volume_db(bus))

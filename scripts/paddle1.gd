@@ -23,10 +23,11 @@ func _on_paddle_zone_2_area_entered(area):
 		area.get_parent().queue_free()
 
 func breakPaddle():
-	visible = false
+	$ColorRect.color.a = 0
 	set_collision_layer_value(1, false)
 	$GPUParticles2D.emitting = true
 	await get_tree().create_timer(5).timeout
+	$ColorRect.color.a = 255
 	$AnimationPlayer.play("respawn")
 	await $AnimationPlayer.animation_finished
 	set_collision_layer_value(1, true)

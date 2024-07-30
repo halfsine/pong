@@ -15,6 +15,8 @@ func _on_area_2d_2_body_entered(body):
 func _on_timer_timeout():
 	$Bomb.visible = true
 	get_parent().get_parent().shakiness += 100
+	$AudioStreamPlayer2D.stream = load("res://sounds/explosion.wav")
+	$AudioStreamPlayer2D.play()
 	freeze = true
 	$Explosion.visible = true
 	for node in $Area2D.get_overlapping_bodies():

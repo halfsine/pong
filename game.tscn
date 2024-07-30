@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://q45nf2rag672"]
+[gd_scene load_steps=29 format=3 uid="uid://q45nf2rag672"]
 
 [ext_resource type="Script" path="res://scripts/paddle1.gd" id="1_60r7s"]
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_iwfre"]
@@ -10,10 +10,6 @@
 [ext_resource type="Shader" path="res://shaders/crt.gdshader" id="5_2n6l1"]
 [ext_resource type="AudioStream" uid="uid://dvhiyovcq84ij" path="res://sounds/wallhit.wav" id="6_y3bks"]
 [ext_resource type="Texture2D" uid="uid://dbqgq41povfox" path="res://sprites/paddlePiece.png" id="7_b1b7p"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_irs5h"]
-noise_type = 3
-fractal_type = 2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s10b8"]
 size = Vector2(1155, 320)
@@ -117,7 +113,7 @@ bg_color = Color(0.0971741, 0.0965545, 0.127556, 1)
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_c1hcg"]
 color = Color(0.878431, 0.47451, 0.521569, 1)
-thickness = 61
+thickness = 11
 vertical = true
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_hampa"]
@@ -157,7 +153,6 @@ shader_parameter/vignette_opacity = 0.1
 process_mode = 3
 texture_filter = 1
 script = ExtResource("1_iwfre")
-shakeNoise = SubResource("FastNoiseLite_irs5h")
 powerups = Array[Resource]([ExtResource("2_k7d4v"), ExtResource("3_jy4mp"), ExtResource("4_biab7")])
 
 [node name="PowerUps" type="Node2D" parent="."]
@@ -346,7 +341,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Panel" type="Panel" parent="Camera2D/Control"]
-visible = false
 texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
@@ -424,6 +418,61 @@ grow_vertical = 2
 scale = Vector2(3.05, 3.05)
 text = "BACK"
 
+[node name="Settings" type="Panel" parent="Camera2D/Control"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dvta0")
+metadata/_edit_use_anchors_ = true
+
+[node name="Back" type="Button" parent="Camera2D/Control/Settings"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 295.0
+offset_top = -320.0
+offset_right = 345.0
+offset_bottom = -289.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3.05, 3.05)
+text = "BACK"
+
+[node name="Binds" type="Button" parent="Camera2D/Control/Settings"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -48.0
+offset_right = -41.0001
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3.05, 3.05)
+text = "BINDS"
+
+[node name="VolumeSlider" type="HSlider" parent="Camera2D/Control/Settings"]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 744.0
+offset_right = 820.0
+offset_bottom = 760.0
+max_value = 1.0
+step = 0.01
+
 [node name="CRT" type="ColorRect" parent="Camera2D/Control"]
 visibility_layer = 2
 material = SubResource("ShaderMaterial_2u148")
@@ -450,4 +499,9 @@ autostart = true
 [connection signal="area_entered" from="PaddleZone1" to="Paddle2" method="_on_paddle_zone_1_area_entered"]
 [connection signal="area_entered" from="PaddleZone2" to="Paddle1" method="_on_paddle_zone_2_area_entered"]
 [connection signal="value_changed" from="Camera2D/Control/Panel/VSlider" to="." method="_on_v_slider_value_changed"]
+[connection signal="pressed" from="Camera2D/Control/Panel/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Camera2D/Control/Panel/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Camera2D/Control/Settings/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Camera2D/Control/Settings/Binds" to="." method="_on_options_pressed"]
+[connection signal="value_changed" from="Camera2D/Control/Settings/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
 [connection signal="timeout" from="PowerUpTimer" to="." method="_on_power_up_timer_timeout"]
