@@ -2,12 +2,14 @@ extends CharacterBody2D
 
 var score = 0
 var input = 0
+@export var moveDirection : Vector2i
+@export var inputActions : Array[StringName]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
-	input = Input.get_axis("up1", "down1")
+	input = Input.get_axis(inputActions[0], inputActions[1])
 	if input:
-		velocity = Vector2(0, input) * 500
+		velocity = (Vector2i(input, input) * moveDirection) * 500
 	else:
 		velocity = velocity.lerp(Vector2.ZERO, 0.25)
 	move_and_slide()

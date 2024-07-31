@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://q45nf2rag672"]
+[gd_scene load_steps=32 format=3 uid="uid://q45nf2rag672"]
 
 [ext_resource type="Script" path="res://scripts/paddle1.gd" id="1_60r7s"]
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_iwfre"]
@@ -10,6 +10,9 @@
 [ext_resource type="Shader" path="res://shaders/crt.gdshader" id="5_2n6l1"]
 [ext_resource type="AudioStream" uid="uid://dvhiyovcq84ij" path="res://sounds/wallhit.wav" id="6_y3bks"]
 [ext_resource type="Texture2D" uid="uid://dbqgq41povfox" path="res://sprites/paddlePiece.png" id="7_b1b7p"]
+[ext_resource type="Script" path="res://scripts/openWindow.gd" id="10_vwyb0"]
+[ext_resource type="Texture2D" uid="uid://dk7equbg1jlmf" path="res://sprites/cursor.png" id="11_7001w"]
+[ext_resource type="Script" path="res://crt.gd" id="12_juhkd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s10b8"]
 size = Vector2(1155, 320)
@@ -138,7 +141,7 @@ shader_parameter/roll_speed = 8.0
 shader_parameter/roll_size = 15.0
 shader_parameter/roll_variation = 1.8
 shader_parameter/distort_intensity = 0.002
-shader_parameter/noise_opacity = 0.161
+shader_parameter/noise_opacity = 0.25
 shader_parameter/noise_speed = 5.0
 shader_parameter/static_noise_intensity = 0.045
 shader_parameter/aberration = 0.03
@@ -182,6 +185,8 @@ shape = SubResource("RectangleShape2D_yili1")
 process_mode = 1
 position = Vector2(-535, 0)
 script = ExtResource("1_60r7s")
+moveDirection = Vector2i(0, 1)
+inputActions = Array[StringName]([&"up1", &"down1"])
 
 [node name="ColorRect" type="ColorRect" parent="Paddle1"]
 anchors_preset = 8
@@ -219,6 +224,8 @@ libraries = {
 process_mode = 1
 position = Vector2(534, 0)
 script = ExtResource("2_q0brg")
+moveDirection = Vector2i(0, 1)
+inputActions = Array[StringName]([&"up2", &"down2"])
 
 [node name="ColorRect" type="ColorRect" parent="Paddle2"]
 anchors_preset = 8
@@ -250,7 +257,6 @@ position = Vector2(-256, -352)
 shape = SubResource("RectangleShape2D_w64ea")
 
 [node name="ThinkTick" type="Timer" parent="Paddle2"]
-wait_time = 0.06
 autostart = true
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="Paddle2"]
@@ -385,7 +391,7 @@ offset_bottom = -44.328
 scale = Vector2(2.525, 2.525)
 text = "AI smartness"
 
-[node name="Options" type="Button" parent="Camera2D/Control/Panel"]
+[node name="Options" type="Button" parent="Camera2D/Control/Panel" node_paths=PackedStringArray("window")]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = 8
@@ -393,14 +399,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -120.0
+offset_left = -124.65
 offset_top = 38.0
-offset_right = -41.0
+offset_right = -42.65
 offset_bottom = 69.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(3.05, 3.05)
-text = "OPTIONS"
+text = "SETTINGS"
+script = ExtResource("10_vwyb0")
+window = NodePath("../../Settings")
 
 [node name="Back" type="Button" parent="Camera2D/Control/Panel"]
 texture_filter = 1
@@ -420,6 +428,7 @@ scale = Vector2(3.05, 3.05)
 text = "BACK"
 
 [node name="Settings" type="Panel" parent="Camera2D/Control"]
+visible = false
 texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
@@ -430,24 +439,27 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dvta0")
 metadata/_edit_use_anchors_ = true
 
-[node name="Back" type="Button" parent="Camera2D/Control/Settings"]
+[node name="Back" type="Button" parent="Camera2D/Control/Settings" node_paths=PackedStringArray("window")]
 texture_filter = 1
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 295.0
-offset_top = -320.0
-offset_right = 345.0
-offset_bottom = -289.0
+anchors_preset = -1
+anchor_left = 0.801
+anchor_top = 0.184
+anchor_right = 0.801
+anchor_bottom = 0.184
+offset_left = -98.7521
+offset_top = -46.976
+offset_right = -33.7521
+offset_bottom = -15.976
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(3.05, 3.05)
 text = "BACK"
+script = ExtResource("10_vwyb0")
+open = false
+window = NodePath("..")
 
-[node name="Binds" type="Button" parent="Camera2D/Control/Settings"]
+[node name="Graphics" type="Button" parent="Camera2D/Control/Settings" node_paths=PackedStringArray("window")]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = 8
@@ -455,14 +467,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -120.0
+offset_left = -132.68
 offset_top = -48.0
-offset_right = -41.0001
+offset_right = -45.68
 offset_bottom = -17.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(3.05, 3.05)
-text = "BINDS"
+text = "GRAPHICS"
+script = ExtResource("10_vwyb0")
+window = NodePath("../../Graphics")
 
 [node name="VolumeSlider" type="HSlider" parent="Camera2D/Control/Settings"]
 layout_mode = 0
@@ -490,6 +504,119 @@ grow_vertical = 2
 scale = Vector2(2.525, 2.525)
 text = "Volume"
 
+[node name="Graphics" type="Panel" parent="Camera2D/Control"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dvta0")
+metadata/_edit_use_anchors_ = true
+
+[node name="Back" type="Button" parent="Camera2D/Control/Graphics" node_paths=PackedStringArray("window")]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.801
+anchor_top = 0.184
+anchor_right = 0.801
+anchor_bottom = 0.184
+offset_left = -98.7521
+offset_top = -46.976
+offset_right = -33.7521
+offset_bottom = -15.976
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3.05, 3.05)
+text = "BACK"
+script = ExtResource("10_vwyb0")
+open = false
+window = NodePath("..")
+
+[node name="Enabled" type="CheckButton" parent="Camera2D/Control/Graphics"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.278
+anchor_top = 0.184
+anchor_right = 0.278
+anchor_bottom = 0.184
+offset_left = -120.256
+offset_top = -30.976
+offset_right = 5.74396
+offset_bottom = 0.0239868
+scale = Vector2(2, 2)
+button_pressed = true
+text = "CRT Effect"
+
+[node name="Vignette" type="HSlider" parent="Camera2D/Control/Graphics"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 727.0
+offset_right = 620.0
+offset_bottom = 743.0
+min_value = -10.0
+max_value = 10.0
+step = 0.1
+value = 0.4
+
+[node name="Label" type="Label" parent="Camera2D/Control/Graphics/Vignette"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -82.0
+offset_top = -69.0
+offset_right = -17.0
+offset_bottom = -46.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.525, 2.525)
+text = "Vignette"
+horizontal_alignment = 1
+
+[node name="ChromaticAbberation" type="HSlider" parent="Camera2D/Control/Graphics"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 634.0
+offset_right = 620.0
+offset_bottom = 650.0
+min_value = -1.0
+max_value = 1.0
+step = 0.01
+value = 0.02
+
+[node name="Label" type="Label" parent="Camera2D/Control/Graphics/ChromaticAbberation"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -218.0
+offset_top = -80.0
+offset_right = -46.0
+offset_bottom = -57.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.525, 2.525)
+text = "Chromatic Abberation"
+horizontal_alignment = 1
+
+[node name="Cursor" type="TextureRect" parent="Camera2D/Control"]
+layout_mode = 0
+offset_right = 30.0
+offset_bottom = 50.0
+mouse_filter = 2
+texture = ExtResource("11_7001w")
+
 [node name="CRT" type="ColorRect" parent="Camera2D/Control"]
 visibility_layer = 2
 material = SubResource("ShaderMaterial_2u148")
@@ -499,26 +626,30 @@ anchor_left = -0.001
 anchor_top = -0.001
 anchor_right = 1.001
 anchor_bottom = 1.001
-offset_left = 0.152
-offset_top = -0.136
-offset_right = -0.1521
+offset_left = 1.152
+offset_top = 0.864
+offset_right = -1.1521
 offset_bottom = 0.135986
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("12_juhkd")
 
 [node name="PowerUpTimer" type="Timer" parent="."]
 process_mode = 1
 wait_time = 5.0
 autostart = true
 
-[connection signal="timeout" from="Paddle2/ThinkTick" to="Paddle2" method="_on_think_tick_timeout"]
 [connection signal="area_entered" from="PaddleZone1" to="Paddle2" method="_on_paddle_zone_1_area_entered"]
 [connection signal="area_entered" from="PaddleZone2" to="Paddle1" method="_on_paddle_zone_2_area_entered"]
 [connection signal="value_changed" from="Camera2D/Control/Panel/VSlider" to="." method="_on_v_slider_value_changed"]
-[connection signal="pressed" from="Camera2D/Control/Panel/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Camera2D/Control/Panel/Options" to="Camera2D/Control/Panel/Options" method="_on_pressed"]
 [connection signal="pressed" from="Camera2D/Control/Panel/Back" to="." method="_on_back_pressed"]
-[connection signal="pressed" from="Camera2D/Control/Settings/Back" to="." method="_on_back_pressed"]
-[connection signal="pressed" from="Camera2D/Control/Settings/Binds" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Camera2D/Control/Settings/Back" to="Camera2D/Control/Settings/Back" method="_on_pressed"]
+[connection signal="pressed" from="Camera2D/Control/Settings/Graphics" to="Camera2D/Control/Settings/Graphics" method="_on_pressed"]
 [connection signal="value_changed" from="Camera2D/Control/Settings/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
+[connection signal="pressed" from="Camera2D/Control/Graphics/Back" to="Camera2D/Control/Graphics/Back" method="_on_pressed"]
+[connection signal="toggled" from="Camera2D/Control/Graphics/Enabled" to="Camera2D/Control/CRT" method="_on_enabled_toggled"]
+[connection signal="value_changed" from="Camera2D/Control/Graphics/Vignette" to="Camera2D/Control/CRT" method="_on_vignette_value_changed"]
+[connection signal="value_changed" from="Camera2D/Control/Graphics/ChromaticAbberation" to="Camera2D/Control/CRT" method="_on_chromatic_abberation_value_changed"]
 [connection signal="timeout" from="PowerUpTimer" to="." method="_on_power_up_timer_timeout"]
