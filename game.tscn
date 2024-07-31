@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://q45nf2rag672"]
+[gd_scene load_steps=33 format=3 uid="uid://q45nf2rag672"]
 
 [ext_resource type="Script" path="res://scripts/paddle1.gd" id="1_60r7s"]
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_iwfre"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://byyy34ii2iwl0" path="res://prefabs/ball.tscn" id="4_7rny7"]
 [ext_resource type="PackedScene" uid="uid://fq3ucxv1vkhf" path="res://prefabs/powerups/bomb.tscn" id="4_biab7"]
 [ext_resource type="Shader" path="res://shaders/crt.gdshader" id="5_2n6l1"]
+[ext_resource type="PackedScene" uid="uid://dcsogvpv2wbyr" path="res://prefabs/powerups/saw.tscn" id="5_67cfd"]
 [ext_resource type="AudioStream" uid="uid://dvhiyovcq84ij" path="res://sounds/wallhit.wav" id="6_y3bks"]
 [ext_resource type="Texture2D" uid="uid://dbqgq41povfox" path="res://sprites/paddlePiece.png" id="7_b1b7p"]
 [ext_resource type="Script" path="res://scripts/openWindow.gd" id="10_vwyb0"]
@@ -156,7 +157,7 @@ shader_parameter/vignette_opacity = 0.1
 process_mode = 3
 texture_filter = 1
 script = ExtResource("1_iwfre")
-powerups = Array[Resource]([ExtResource("2_k7d4v"), ExtResource("3_jy4mp"), ExtResource("4_biab7")])
+powerups = Array[Resource]([ExtResource("2_k7d4v"), ExtResource("3_jy4mp"), ExtResource("4_biab7"), ExtResource("5_67cfd")])
 
 [node name="PowerUps" type="Node2D" parent="."]
 
@@ -389,7 +390,17 @@ offset_top = -67.328
 offset_right = -27.0
 offset_bottom = -44.328
 scale = Vector2(2.525, 2.525)
-text = "AI smartness"
+text = "CPU smartness"
+
+[node name="AIEnabled" type="CheckButton" parent="Camera2D/Control/Panel"]
+layout_mode = 0
+offset_left = 761.0
+offset_top = 400.0
+offset_right = 891.0
+offset_bottom = 431.0
+scale = Vector2(2, 2)
+button_pressed = true
+text = "CPU Enabled"
 
 [node name="Options" type="Button" parent="Camera2D/Control/Panel" node_paths=PackedStringArray("window")]
 texture_filter = 1
@@ -643,6 +654,7 @@ autostart = true
 [connection signal="area_entered" from="PaddleZone1" to="Paddle2" method="_on_paddle_zone_1_area_entered"]
 [connection signal="area_entered" from="PaddleZone2" to="Paddle1" method="_on_paddle_zone_2_area_entered"]
 [connection signal="value_changed" from="Camera2D/Control/Panel/VSlider" to="." method="_on_v_slider_value_changed"]
+[connection signal="toggled" from="Camera2D/Control/Panel/AIEnabled" to="Paddle2" method="_on_ai_enabled_toggled"]
 [connection signal="pressed" from="Camera2D/Control/Panel/Options" to="Camera2D/Control/Panel/Options" method="_on_pressed"]
 [connection signal="pressed" from="Camera2D/Control/Panel/Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="Camera2D/Control/Settings/Back" to="Camera2D/Control/Settings/Back" method="_on_pressed"]

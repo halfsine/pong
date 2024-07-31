@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://by1yeo76ja8e7"]
+
+[ext_resource type="Script" path="res://scripts/sawPowerUp.gd" id="1_61vly"]
+[ext_resource type="Texture2D" uid="uid://d0wp6cughsjlt" path="res://sprites/sawpowerup.png" id="2_dgqo8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ccwme"]
+radius = 50.0
+
+[node name="InvertedControls" type="Node2D"]
+script = ExtResource("1_61vly")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_dgqo8")
+
+[node name="Area2D" type="Area2D" parent="." groups=["saw"]]
+collision_layer = 0
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_ccwme")
+
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

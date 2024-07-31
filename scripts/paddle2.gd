@@ -49,3 +49,7 @@ func breakPaddle():
 	$AnimationPlayer.play("respawn")
 	await $AnimationPlayer.animation_finished
 	set_collision_layer_value(1, true)
+
+
+func _on_ai_enabled_toggled(toggled_on):
+	isAi = toggled_on
